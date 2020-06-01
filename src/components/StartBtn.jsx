@@ -15,6 +15,7 @@ const ButtonWrapper = styled.button`
   padding: 0.6rem;
   cursor: pointer;
   position: absolute;
+  font-family: Pixel, Arial, Helvetica, sans-serif;
   left: 45%;
   top: 47%;
   z-index: 200;
