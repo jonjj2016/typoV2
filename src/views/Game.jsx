@@ -16,7 +16,7 @@ const Game = () => {
     active: '',
     finalScore: 0,
     currentScore: 0,
-    lvl: 0,
+    lvl: 1,
     score: 0,
     sec: 40,
     start: false,
@@ -27,7 +27,7 @@ const Game = () => {
     wrongTypos: 0,
   });
   const myRef = useRef();
-
+  const elementRef = useRef();
   useEffect(() => {
     setState({ ...state, current: '', active: state.word[0] });
     myRef.current.focus();
@@ -37,8 +37,8 @@ const Game = () => {
     const val = state.word.reduce((acc, red) => acc + red);
 
     if (!val) {
-      if (state.score > 9) {
-        setTimer(10);
+      if (state.currentScore > 9) {
+        setTimer(timer - 1);
         setState({ ...state, current: '', sec: state.sec - 5, currentScore: 0, score: state.score + 1, lvl: state.lvl + 1, word: randomWords().split('') });
       } else {
         setTimer(10);
@@ -78,12 +78,12 @@ const Game = () => {
       console.log(word);
       setState({ ...state, current: '', allTypos: state.allTypos + 1, word, warrning: false });
     } else {
-      setState({ ...state, current: '', allTypos: state.allTypos + 1, wrongTypos: state.wrongTypos + 1, warrning: true });
+      setState({ ...state, current: '', sec: state.sec - 1, allTypos: state.allTypos + 1, wrongTypos: state.wrongTypos + 1, warrning: true });
     }
   };
 
   const onStart = () => {
-    setState({ ...state, start: true, lvl: 0, score: 0, word: randomWords().split('') });
+    setState({ ...state, start: true, lvl: 0, score: 0, word: randomWords().split(''), warrning: false });
     myRef.current.focus();
   };
 

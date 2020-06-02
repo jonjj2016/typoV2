@@ -8,9 +8,9 @@ const Info = ({ state, timer }) => {
       <Display info={timer} text={'Time'} />
       <Display info={state.lvl} text={'LVL'} />
       <Display info={state.score} text={'Score'} />
-      <Display info={Math.round(100 - (state.wrongTypos / state.allTypos) * 100) || 100} text={'Accuracy'} extra='%' />
-      <Display info={state.allTypos} text={'All'} />
-      <Display info={state.wrongTypos} text={'All'} />
+      <Display warrning={state.warrning} info={Math.round(100 - (state.wrongTypos / state.allTypos) * 100) || 100} text={'Accuracy'} extra='%' />
+      {/* <Display info={state.allTypos} text={'All'} />
+      <Display info={state.wrongTypos} text={'All'} /> */}
     </StyledInfoBar>
   );
 };

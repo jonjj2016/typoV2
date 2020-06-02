@@ -9,7 +9,6 @@ export const Wrapper = styled.div `
   width: 100vw;
   position: relative;
   z-index: 1;
-  /* overflow:hidden; */
   background-color: rgba(255, 255, 255, 0.8);
 `;
 export const Line = styled.div `

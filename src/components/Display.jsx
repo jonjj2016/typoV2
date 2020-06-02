@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Display = ({ info, text, extra }) => {
+const Display = ({ info, text, extra, warrning }) => {
   return (
-    <DisplayWrapper>
+    <DisplayWrapper warrning={warrning}>
       <h1>
         {text}: {info} {extra}
       </h1>
@@ -13,6 +13,21 @@ const Display = ({ info, text, extra }) => {
 const DisplayWrapper = styled.div`
   height: 70%;
   display: flex;
+  animation-name: ${(props) => (props.warrning ? 'an' : '')};
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  @keyframes an {
+    0% {
+      background-color: red;
+    }
+    50% {
+      background-color: #eee;
+    }
+
+    100% {
+      background-color: red;
+    }
+  }
   justify-content: center;
   align-items: center;
   border: 1px solid #888;
