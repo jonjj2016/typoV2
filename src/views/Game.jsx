@@ -92,7 +92,7 @@ const Game = () => {
 
   const onStart = () => {
     setTimer(0);
-    setState({ ...state, start: true, lvl: 1, currentScore: 0, score: 0, word: randomWords().split(''), warrning: false });
+    setState({ ...state, accuacy: 100, start: true, lvl: 1, currentScore: 0, score: 0, word: randomWords().split(''), warrning: false });
     myRef.current.focus();
   };
   const gameOver = () => {
