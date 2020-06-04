@@ -6,19 +6,17 @@ const StartBtn = ({ children, ...rest }) => {
 };
 const ButtonWrapper = styled.button`
   outline: none;
-  border: 1px solid #999;
-  /* height: 3rem; */
+  border: none;
+  border: 1px solid #007bff;
   min-width: 20rem;
   max-height: 4rem;
   background: transparent;
   font-size: 2rem;
   padding: 0.6rem;
   cursor: pointer;
-  position: absolute;
+  color: #007bff;
+
   font-family: Pixel, Arial, Helvetica, sans-serif;
-  left: 45%;
-  top: 47%;
-  z-index: 200;
   border-radius: 10px;
 `;
 export default StartBtn;

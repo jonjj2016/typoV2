@@ -1,16 +1,16 @@
 import React from 'react';
 import Display from './Display';
 import styled from 'styled-components';
+import Bck from '../bck2.png';
 
-const Info = ({ state, timer }) => {
+const Info = ({ state }) => {
   return (
     <StyledInfoBar>
-      <Display info={timer} text={'Time'} />
+      {/* <Video src={Vid} autoPlay loop /> */}
       <Display info={state.lvl} text={'LVL'} />
       <Display info={state.score} text={'Score'} />
-      <Display warrning={state.warrning} info={Math.round(100 - (state.wrongTypos / state.allTypos) * 100) || 100} text={'Accuracy'} extra='%' />
-      {/* <Display info={state.allTypos} text={'All'} />
-      <Display info={state.wrongTypos} text={'All'} /> */}
+      <Display warrning={state.warrning} info={state.accuacy} text={'Accuracy'} extra='%' />
+      {/* <Button /> */}
     </StyledInfoBar>
   );
 };
@@ -19,16 +19,15 @@ const StyledInfoBar = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  /* display: flex;
-  align-items: center;
-  justify-content: space-around; */
-  height: 50vh;
-  z-index: -1;
-
+  height: 100vh;
+  z-index: -4;
+  background-color: #000;
+  /* background-size: cover; */
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   gap: 1px 1px;
   grid-template-areas: '. . . .' '. . . .' '. . . .';
 `;
+
 export default Info;

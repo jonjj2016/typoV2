@@ -13,6 +13,7 @@ const Display = ({ info, text, extra, warrning }) => {
 const DisplayWrapper = styled.div`
   height: 70%;
   display: flex;
+  color: #007bff;
   animation-name: ${(props) => (props.warrning ? 'an' : '')};
   animation-duration: 1s;
   animation-fill-mode: forwards;
@@ -30,11 +31,11 @@ const DisplayWrapper = styled.div`
   }
   justify-content: center;
   align-items: center;
-  border: 1px solid #888;
-  border-radius: 20px;
+  /* border: 1px solid #888; */
+  /* border-radius: 20px; */
   font-family: Pixel, Arial, Helvetica, sans-serif;
   box-shadow: 2px 2px 30px rgba(0, 0, 0, 0.3);
-  width: 100%;
+  width: 98%;
   min-height: 20vh;
 `;
 export default Display;

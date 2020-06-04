@@ -1,21 +1,25 @@
 import React, { useEffect, useState, useRef } from 'react';
 import randomWords from 'random-words';
-import Button from '../components/StartBtn';
 import Element from '../components/Element';
 import InfoBar from '../components/Info';
+import Landing from './Landing';
 import { Line, Wrapper } from '../components/styles/Main';
-// import Explosion from 'react-explode/Guyam';
+import Measure from 'react-measure';
 
 let interval;
 
 const Game = () => {
-  const [timer, setTimer] = useState(10);
+  const [timer, setTimer] = useState(0);
   const [state, setState] = useState({
     word: ['l', 'a', 'u', 'g', 'h', 't', 'e', 'r'],
     current: '',
     active: '',
     finalScore: 0,
     currentScore: 0,
+    dimensions: {
+      height: -1,
+      width: -1,
+    },
     lvl: 1,
     score: 0,
     sec: 40,
@@ -25,9 +29,11 @@ const Game = () => {
     warrning: false,
     allTypos: 0,
     wrongTypos: 0,
+    accuacy: 100,
   });
   const myRef = useRef();
-  const elementRef = useRef();
+  //   console.log(timer);
+
   useEffect(() => {
     setState({ ...state, current: '', active: state.word[0] });
     myRef.current.focus();
@@ -35,15 +41,20 @@ const Game = () => {
   useEffect(() => {
     //check if word is typed
     const val = state.word.reduce((acc, red) => acc + red);
-
     if (!val) {
-      if (state.currentScore > 9) {
-        setTimer(timer - 1);
-        setState({ ...state, current: '', sec: state.sec - 5, currentScore: 0, score: state.score + 1, lvl: state.lvl + 1, word: randomWords().split('') });
+      setTimer(0);
+      let currentScore;
+      let lvl;
+      if (state.currentScore >= 9) {
+        currentScore = 0;
+        lvl = state.lvl + 1;
       } else {
-        setTimer(10);
-        setState({ ...state, current: '', currentScore: state.currentScore + 1, score: state.score + 1, word: randomWords().split('') });
+        console.log(state);
+
+        currentScore = state.currentScore + 1;
+        lvl = state.lvl;
       }
+      setState({ ...state, current: '', currentScore, score: state.score + 1, lvl, word: randomWords().split('') });
     }
   }, [state]);
 
@@ -54,39 +65,40 @@ const Game = () => {
   }, []);
 
   useEffect(() => {
-    if (state.start) {
+    if (state.start && timer >= 0) {
       interval = setInterval(() => {
-        if (timer <= 0) {
-          clearInterval(interval);
-          setTimer(10);
-          setState({ ...state, start: false, currentScore: 0, lvl: 0 });
-        } else {
-          setTimer(timer - 1);
-        }
-      }, 1000);
+        setTimer(timer + 0.1);
+      }, 100);
     }
     return () => clearInterval(interval);
   }, [timer, state.start]);
-
+  useEffect(() => {
+    console.log(state.dimensions.height);
+  }, [state.dimensions.height]);
   const onChange = (e) => {
     const { value } = e.target;
     setState({ ...state, current: e.target.value });
-    const index = state.word.indexOf(value);
+    const accuacy = Math.round(100 - (state.wrongTypos / state.allTypos) * 100) || 100;
+
+    const index = state.word.indexOf(value.toLowerCase());
     const word = [...state.word];
     if (word[index] && !word[index - 1]) {
       word[index] = '';
-      console.log(word);
-      setState({ ...state, current: '', allTypos: state.allTypos + 1, word, warrning: false });
+      setState({ ...state, current: '', accuacy, allTypos: state.allTypos + 1, word, warrning: false });
     } else {
-      setState({ ...state, current: '', sec: state.sec - 1, allTypos: state.allTypos + 1, wrongTypos: state.wrongTypos + 1, warrning: true });
+      setState({ ...state, current: '', accuacy, allTypos: state.allTypos + 1, wrongTypos: state.wrongTypos + 1, warrning: true });
     }
   };
 
   const onStart = () => {
-    setState({ ...state, start: true, lvl: 0, score: 0, word: randomWords().split(''), warrning: false });
+    setTimer(0);
+    setState({ ...state, start: true, lvl: 1, currentScore: 0, score: 0, word: randomWords().split(''), warrning: false });
     myRef.current.focus();
   };
-
+  const gameOver = () => {
+    console.log('game over', state);
+    setState({ ...state, start: false });
+  };
   const renderer = () => {
     return (
       <React.Fragment>
@@ -95,7 +107,7 @@ const Game = () => {
             if (letter) {
               return (
                 <Line key={index}>
-                  <Element warrning={!state.word[index - 1] && state.warrning} duration={state.sec} index={index} letter={letter} active={!state.word[index - 1]}>
+                  <Element height={state.dimensions.height} gameOver={gameOver} warrning={!state.word[index - 1] && state.warrning} duration={state.sec} index={index} letter={letter} active={!state.word[index - 1]}>
                     {letter}
                   </Element>
                 </Line>
@@ -109,14 +121,23 @@ const Game = () => {
   };
 
   return (
-    <React.Fragment>
-      <InfoBar timer={timer} state={state} />
-      <Wrapper>
-        {!state.start && <Button onClick={onStart}>Start</Button>}
-        {renderer()}
-        <input style={{ opacity: 0 }} value={state.current} type='text' ref={myRef} onChange={onChange} />
-      </Wrapper>
-    </React.Fragment>
+    <Measure
+      bounds
+      onResize={(contentRect) => {
+        setState({ ...state, dimensions: contentRect.bounds });
+      }}>
+      {({ measureRef }) => (
+        <div ref={measureRef}>
+          <InfoBar timer={timer} state={state} />
+          <Wrapper>
+            {!state.start && <Landing onClick={onStart}></Landing>}
+            {renderer()}
+            <input style={{ opacity: 0 }} value={state.current} type='text' ref={myRef} onChange={onChange} />
+          </Wrapper>
+          )}
+        </div>
+      )}
+    </Measure>
   );
 };
 
