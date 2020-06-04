@@ -35,3 +35,7 @@ export const Line = styled.div `
   /* align-self: center; */
   justify-self: center;
 `;
+export const Main = styled.div `
+height:100vh;
+overflow:hidden
+`

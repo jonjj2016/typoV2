@@ -3,7 +3,7 @@ import randomWords from 'random-words';
 import Element from '../components/Element';
 import InfoBar from '../components/Info';
 import Landing from './Landing';
-import { Line, Wrapper } from '../components/styles/Main';
+import { Line, Wrapper, Main } from '../components/styles/Main';
 import Measure from 'react-measure';
 
 let interval;
@@ -121,23 +121,25 @@ const Game = () => {
   };
 
   return (
-    <Measure
-      bounds
-      onResize={(contentRect) => {
-        setState({ ...state, dimensions: contentRect.bounds });
-      }}>
-      {({ measureRef }) => (
-        <div ref={measureRef}>
-          <InfoBar timer={timer} state={state} />
-          <Wrapper>
-            {!state.start && <Landing onClick={onStart}></Landing>}
-            {renderer()}
-            <input style={{ opacity: 0 }} value={state.current} type='text' ref={myRef} onChange={onChange} />
-          </Wrapper>
-          )}
-        </div>
-      )}
-    </Measure>
+    <Main>
+      <Measure
+        bounds
+        onResize={(contentRect) => {
+          setState({ ...state, dimensions: contentRect.bounds });
+        }}>
+        {({ measureRef }) => (
+          <div ref={measureRef}>
+            <InfoBar timer={timer} state={state} />
+            <Wrapper>
+              {!state.start && <Landing onClick={onStart}></Landing>}
+              {renderer()}
+              <input style={{ opacity: 0 }} value={state.current} type='text' ref={myRef} onChange={onChange} />
+            </Wrapper>
+            )}
+          </div>
+        )}
+      </Measure>
+    </Main>
   );
 };
 
